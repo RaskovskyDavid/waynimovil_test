@@ -89,6 +89,16 @@ const useStyles = makeStyles((theme) => ({
           backgroundColor:"#0FD08B"
       }
       
+    },
+    movimientoCredito: {
+      fontSize:"0.875rem",
+      lineHeight: "1.225rem",
+      color:"#00A067"
+    },
+    movimientoDebito: {
+      fontSize:"0.875rem",
+      lineHeight: "1.225rem",
+      color:"#F96440"
     }
   }));
 
@@ -124,6 +134,7 @@ useEffect(() => {
 return (
     
     <React.Fragment>
+    
       <Grid container direction="column"  alignItems="center" justifyContent="center">
         <Grid item style={{marginTop:"1.25em"}}>{/*-----Titel Block -----*/}
           <Grid container justifyContent="center" direction="row">
@@ -234,8 +245,11 @@ return (
           </Card>
           </Grid>
       </Grid>
+      
       <Grid item style={{marginTop:"1.25em"}}> {/*-----Movimientos Block -----*/}
+      
       <Grid container  direction="column">
+      
         <Grid item>
         <Grid container direction="row" style={{backgroundColor:"#2A1846", minWidth:"21em"}}>
           <Grid item >
@@ -243,8 +257,12 @@ return (
           style={{color:"white", fontSize:"0.875rem", paddingLeft:"0.75em"}}> MOVIMIENTOS </Typography></Grid>
         </Grid>
         </Grid>
+
+        
         <Grid item>
           <List style={{margin: "0", padding:"0"}}>
+
+          {movimientos.map(movimiento =>(
           <ListItem alignItems="center" style={{padding:1}}>
           <Card  style={{width:"100%"}}>
           <CardContent >
@@ -252,53 +270,42 @@ return (
             alignItems="center" justifyContent="space-between"
              alignContent="center">
               <Grid item>
-                <Typography variant="h5" style={{fontSize:"0.875rem"}}>19-03-20</Typography>
+                <Typography variant="h5" style={{fontSize:"0.875rem"}}>
+                {
+                  new Date(movimiento.date).toLocaleDateString('en-GB')
+                }</Typography>
               </Grid>
               <Grid item style={{width:"10.375em"}}>
                 <Grid container direction="column" style={{textAlign:"left"}}>
                   <Grid item>
-                    <Typography variant="h5" style={{fontSize:"0.875rem", lineHeight: "1.225rem"}}> Transferencia</Typography>
+                    <Typography variant="h5" style={{fontSize:"0.875rem", lineHeight: "1.225rem"}}> 
+                  
+                    { movimiento.info.substring(0,17) === 'Transferencia Aut'? movimiento.info.substring(0,13):movimiento.info}
+                    </Typography>
                   </Grid>
                   <Grid item>
-                    <Typography variant="h5" style={{fontSize:"0.875rem", lineHeight: "1.225rem"}}> Aut. 394991</Typography>
+                    <Typography variant="h5" style={{fontSize:"0.875rem", lineHeight: "1.225rem"}}>
+                     
+                     { movimiento.info.substring(0,17) === 'Transferencia Aut'? movimiento.info.substring(14,movimiento.info.lenght):''}
+                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item>
-              <Typography variant="h5" style={{fontSize:"0.875rem", lineHeight: "1.225rem", color:"#00A067"}}>+ $200,00</Typography>
+              
+              <Typography variant="h5" className={movimiento.debit === 0 ? classes.movimientoCredito: classes.movimientoDebito} >
+              {movimiento.debit === 0 ? `+ $${movimiento.credit}` : `- $${movimiento.debit}`}
+              
+              </Typography>
               </Grid>
             </Grid>
           </CardContent>
               
           </Card>
           </ListItem>
-          <ListItem alignItems="center" style={{padding:1}}>
-          <Card  style={{width:"100%"}}>
-          <CardContent >
-          <Grid container direction="row"
-            alignItems="center" justifyContent="space-between"
-             alignContent="center">
-              <Grid item>
-                <Typography variant="h5" style={{fontSize:"0.875rem"}}>19-03-20</Typography>
-              </Grid>
-              <Grid item style={{width:"10.375em"}}>
-                <Grid container direction="column" style={{textAlign:"left"}}>
-                  <Grid item>
-                    <Typography variant="h5" style={{fontSize:"0.875rem", lineHeight: "1.225rem"}}> Pago de servicio</Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="h5" style={{fontSize:"0.875rem", lineHeight: "1.225rem"}}> Aut. 394991</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item>
-              <Typography variant="h5" style={{fontSize:"0.875rem", lineHeight: "1.225rem", color:"#F96440"}}>- 4200,00</Typography>
-              </Grid>
-            </Grid>
-          </CardContent>
-              
-          </Card>
-          </ListItem>
+            ))}
+
+          
           </List>
         </Grid>
       </Grid>
